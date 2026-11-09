@@ -1,0 +1,13 @@
+opencv-python
+mediapipe
+numpy
+customtkinter
+pytest
+pyinstaller
+#OpenCV: đọc webcam và xử lý ảnh.
+#MediaPipe: nhận diện tư thế.
+#NumPy: tính toán vector, góc khớp.
+#CustomTkinter: giao diện desktop.
+##Pillow: xử lý ảnh hiển thị.
+#pytest: kiểm thử.
+#gPyInstaller: đóng gói ứng dụng thành .exe
