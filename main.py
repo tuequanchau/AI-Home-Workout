@@ -1,3 +1,4 @@
+ giao-dien-ui-1
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -24,3 +25,14 @@ def workout() -> HTMLResponse:
 @app.get("/summary", response_class=HTMLResponse)
 def summary() -> HTMLResponse:
     return HTMLResponse(get_summary_html())
+
+def main():
+    print("================================")
+    print("   AI HOME WORKOUT ASSISTANT")
+    print("================================")
+    print("Project is running successfully!")
+
+
+if __name__ == "__main__":
+    main()
+ main
