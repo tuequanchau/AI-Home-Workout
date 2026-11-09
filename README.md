@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 # AI Home Workout Assistant
 
 ## 1. Introduction
@@ -39,3 +40,5 @@ pip install -r requirements.txt
 Run application:
 
 python main.py
+=======
+>>>>>>> 4baf0b693d1dde64c96990ea6559b7224847bc6f
