@@ -74,10 +74,11 @@ def get_workout_html() -> str:
 </div>
 <!-- END: AmbientBackgroundGlow -->
 <!-- BEGIN: TopHeader -->
-<header class="relative z-10 w-full border-b border-white/10 backdrop-blur-xl bg-black/60 sticky top-0" data-purpose="app-header">
+<header class="fixed inset-x-0 top-0 z-50 w-full border-b border-white/10 backdrop-blur-xl bg-black/90" data-purpose="app-header">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 <!-- Brand Logo & Identity -->
-<div class="flex items-center gap-4">
+<div class="flex items-center gap-3">
+<a href="/" class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-2 text-sm font-semibold text-slate-200 hover:bg-white/10" aria-label="Trở về trang chủ"><span aria-hidden="true">←</span><span class="hidden sm:inline">Trang chủ</span></a>
 <a class="flex items-center gap-3.5 group focus:outline-none focus:ring-2 focus:ring-[#00d2ff] rounded-2xl p-1" href="#">
 <img alt="SMURF FITNESS Logo" class="h-14 w-14 object-cover rounded-2xl shadow-[0_0_20px_rgba(0,210,255,0.3)] border border-white/20 transition-transform duration-300 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMq7rJI3aRSSeattprqkNFKoDR5fbMSrl5d_n7u7iO3KP7XfiSBlv7Ouffi9YAhKZDke4jvfPaaMd3NSPMszqK9BsqTe4JqWkn_79pNtLOEXzbaIDieE5SCDkZ5NbKk7QXe-hlswVd3B9aJ6cgUUwt_ugmiMSUhkxkAgNOvsFLDSU_8cnSXgJWCPZewsbr8zCCa1bzfWumSwF8t0bqWwF9i5xM7I7klLzwVE8TiRubMAPIy2zKldtGHQ">
 <div class="flex flex-col">
@@ -107,7 +108,7 @@ def get_workout_html() -> str:
 </header>
 <!-- END: TopHeader -->
 <!-- BEGIN: MainContent -->
-<main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 lg:pt-8" id="workout-main" data-purpose="workout-screen">
+<main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 lg:pt-8" id="workout-main" data-purpose="workout-screen" style="margin-top:5rem;padding-top:1rem">
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
 <!-- BEGIN: LeftColumn_CameraHUD -->
 <!-- Large AI Vision Camera Feed Container -->
@@ -123,7 +124,7 @@ def get_workout_html() -> str:
               Góc máy: Rõ toàn thân
             </span>
 <span class="hidden sm:inline text-white/20">|</span>
-<span class="hidden sm:inline">Khoảng cách khuyến nghị: 2.0m - 2.5m</span>
+<span id="camera-requirement" class="hidden sm:inline">Yêu cầu: xoay người sang một bên, vai hướng về camera</span>
 </div>
 
 </div>
@@ -131,7 +132,7 @@ def get_workout_html() -> str:
 <!-- END: LeftColumn_CameraHUD -->
 <!-- BEGIN: RightColumn_GuideAndControls -->
 <!-- Exercise Guide & AI Feedback Center -->
-<aside class="lg:col-span-4 bg-[#1c1c1e] p-6 sm:p-7 rounded-3xl border border-white/10 shadow-2xl flex flex-col space-y-6" data-purpose="exercise-guide-panel"><div class="border-b border-white/10 pb-5"><div class="flex items-center justify-between mb-2"><span class="text-xs font-bold uppercase tracking-wider text-[#00d2ff] bg-[#00d2ff]/10 px-2.5 py-1 rounded-md border border-[#00d2ff]/20">Bài tập hiện tại</span><span class="text-xs text-[#86868b] font-medium">Hiệp 2 / 4</span></div><h1 id="exercise-title" class="text-2xl font-extrabold text-white tracking-tight">SQUAT</h1><p id="exercise-muscles" class="text-xs text-[#86868b] mt-1 font-medium">Nhóm cơ: Đùi trước, cơ mông &amp; cơ lõi</p></div><div class="rounded-2xl p-4 bg-gradient-to-r from-emerald-950/40 to-[#141416] border border-emerald-500/30 relative overflow-hidden" data-purpose="ai-live-verdict"><div class="flex items-start gap-3"><div class="h-8 w-8 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 border border-emerald-500/40 text-emerald-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div><div class="flex items-center gap-2"><h3 id="exercise-feedback-title" class="text-sm font-bold text-emerald-400">Phản hồi: Bắt đầu khi bạn sẵn sàng</h3></div><p id="exercise-feedback" class="text-xs text-slate-300 mt-1 leading-relaxed">Đặt toàn bộ cơ thể trong khung hình để bắt đầu.</p></div></div></div><div class="w-full rounded-2xl bg-[#141416] border border-white/10 p-4 relative overflow-hidden flex flex-col justify-between" data-purpose="motion-demonstration"><div class="flex items-center justify-between mb-2"><span id="motion-title" class="text-xs font-semibold text-white flex items-center gap-1.5"><svg class="w-4 h-4 text-[#00d2ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>Mô phỏng động tác chuẩn&nbsp;</span></div><div class="h-80 md:h-96 rounded-2xl bg-white border border-white/10 relative flex items-center justify-center overflow-hidden"><img id="exercise-demo-gif" src="/static/Squats.gif" alt="Minh họa động tác Squat" class="h-full w-full object-contain"><span id="motion-tip" class="sr-only">Góc hạ hông lý tưởng: 90° - 100°</span><span id="motion-subtip" class="sr-only">Trọng tâm dồn đều vào gót chân</span></div></div><div class="rounded-2xl bg-black/60 border border-white/10 px-4 py-3 flex items-center justify-between shadow-inner"><span class="text-xs text-slate-300 font-medium flex items-center gap-2">🔥 Calo tiêu thụ ước tính:</span><span class="text-xs font-bold text-[#00d2ff] font-mono drop-shadow-[0_0_10px_rgba(0,210,255,0.4)]">~45 kcal</span></div><div class="pt-2 flex items-center gap-3" data-purpose="action-buttons"><button id="start-workout-button" aria-label="Bắt đầu buổi tập" class="flex-1 bg-[#00d2ff] hover:bg-cyan-300 active:scale-95 text-black font-bold rounded-full py-3.5 px-4 flex items-center justify-center gap-2 transition-all text-sm" type="button"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg><span>Bắt đầu</span></button><button aria-label="Tạm dừng buổi tập" style="display:none" class="flex-1 bg-white/10 hover:bg-white/20 active:scale-95 text-white font-semibold rounded-full py-3.5 px-4 flex items-center justify-center gap-2 border border-white/10 transition-all text-sm shadow-md" type="button"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg><span class="">Tạm dừng</span></button><a href="/summary" aria-label="Kết thúc buổi tập" style="display:none" class="flex-1 bg-red-600 hover:bg-red-500 active:scale-95 text-white font-semibold rounded-full py-3.5 px-4 flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(239,68,68,0.45)] transition-all text-sm" role="button"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"></path></svg><span class="">Kết thúc</span></a></div></aside>
+<aside class="lg:col-span-4 bg-[#1c1c1e] p-6 sm:p-7 rounded-3xl border border-white/10 shadow-2xl flex flex-col space-y-6" data-purpose="exercise-guide-panel"><div class="border-b border-white/10 pb-4"><div class="flex flex-wrap items-center gap-3"><span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#00d2ff] bg-[#00d2ff]/10 px-3 py-1.5 rounded-md border border-[#00d2ff]/20">Bài tập hiện tại</span><h1 id="exercise-title" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">SQUAT</h1></div></div><section class="rounded-2xl p-4 sm:p-5 bg-[#111719] border border-emerald-500/30" data-purpose="ai-live-verdict"><h2 id="exercise-feedback-title" class="text-base sm:text-lg font-bold text-emerald-400 mb-2">Hướng dẫn</h2><p id="exercise-feedback" class="text-base sm:text-lg text-slate-100 leading-relaxed">Thực hiện theo hướng dẫn của bài tập.</p></section><div class="w-full rounded-2xl bg-[#141416] border border-white/10 p-4 relative overflow-hidden flex flex-col justify-between" data-purpose="motion-demonstration"><div class="flex items-center justify-between mb-2"><span id="motion-title" class="text-xs font-semibold text-white flex items-center gap-1.5"><svg class="w-4 h-4 text-[#00d2ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>Mô phỏng động tác chuẩn&nbsp;</span></div><div class="h-80 md:h-96 lg:h-[30rem] rounded-2xl bg-white border border-white/10 relative flex items-center justify-center overflow-hidden"><img id="exercise-demo-gif" src="/static/Squats.gif" alt="Minh họa động tác Squat" class="h-full w-full object-contain"><span id="motion-tip" class="sr-only">Góc hạ hông lý tưởng: 90° - 100°</span><span id="motion-subtip" class="sr-only">Trọng tâm dồn đều vào gót chân</span></div></div><div class="pt-2 flex items-center gap-3" data-purpose="action-buttons"><button id="start-workout-button" aria-label="Bắt đầu buổi tập" class="flex-1 bg-[#00d2ff] hover:bg-cyan-300 active:scale-95 text-black font-bold rounded-full py-3.5 px-4 flex items-center justify-center gap-2 transition-all text-sm" type="button"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg><span>Bắt đầu</span></button><button aria-label="Tạm dừng buổi tập" style="display:none" class="flex-1 bg-white/10 hover:bg-white/20 active:scale-95 text-white font-semibold rounded-full py-3.5 px-4 flex items-center justify-center gap-2 border border-white/10 transition-all text-sm shadow-md" type="button"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg><span class="">Tạm dừng</span></button><a href="/summary" aria-label="Kết thúc buổi tập" style="display:none" class="flex-1 bg-red-600 hover:bg-red-500 active:scale-95 text-white font-semibold rounded-full py-3.5 px-4 flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(239,68,68,0.45)] transition-all text-sm" role="button"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"></path></svg><span class="">Kết thúc</span></a></div></aside>
 <!-- END: RightColumn_GuideAndControls -->
 </div>
 </main><div class="fixed bottom-5 inset-x-0 z-30 flex justify-center px-4 pointer-events-none"></div>
@@ -181,35 +182,49 @@ def get_workout_html() -> str:
 <style data-purpose="workout-fit-screen">
 @media (min-width: 1024px) and (min-height: 680px) {
   body { height:100vh; min-height:0 !important; overflow:hidden; padding-bottom:0 !important; }
-  #workout-main { height:calc(100vh - 76px); padding-top:.65rem !important; padding-bottom:.5rem !important; overflow:hidden; }
+  #workout-main { margin-top:5rem; height:calc(100vh - 5rem); padding-top:.65rem !important; padding-bottom:.5rem !important; overflow:hidden; }
   #workout-main > .grid { height:100%; min-height:0; align-items:stretch !important; gap:.8rem !important; }
   #workout-main section[aria-label="Khu vực theo dõi camera AI"] { min-height:0; gap:.55rem !important; }
   #workout-main section[aria-label="Khu vực theo dõi camera AI"] > div:first-child { height:calc(100vh - 150px) !important; min-height:0 !important; padding:1rem !important; }
   #workout-main section[aria-label="Khu vực theo dõi camera AI"] > div:nth-child(2) { padding:.55rem .8rem !important; }
-  #workout-main aside[data-purpose="exercise-guide-panel"] { min-height:0; overflow:hidden; padding:1rem !important; gap:.65rem !important; }
+  #workout-main aside[data-purpose="exercise-guide-panel"] { min-height:0; height:auto !important; max-height:calc(100vh - 6rem); overflow-y:auto; overflow-x:hidden; padding:.8rem !important; gap:.4rem !important; }
+  #workout-main aside[data-purpose="ai-live-verdict"] { display:block; flex:0 0 auto !important; height:auto !important; min-height:0 !important; padding:.65rem .8rem !important; overflow:visible !important; }
+  #workout-main aside #exercise-feedback { display:block; height:auto !important; max-height:none !important; white-space:normal; overflow:visible; line-height:1.45 !important; }
   #workout-main aside [data-purpose="motion-demonstration"] { padding:.65rem !important; }
-  #workout-main aside [data-purpose="motion-demonstration"] .h-80 { height:10rem !important; }
-  #workout-main aside [data-purpose="motion-demonstration"] .md\:h-96 { height:10rem !important; }
+  #workout-main aside [data-purpose="motion-demonstration"] .h-80 { height:14rem !important; }
+  #workout-main aside [data-purpose="motion-demonstration"] .md\:h-96 { height:14rem !important; }
   #workout-main aside .pb-5 { padding-bottom:.6rem !important; }
+  #workout-main aside[data-purpose="exercise-guide-panel"] { gap:.85rem !important; }
 }
 @media (min-width: 1024px) and (max-height:679px) { #workout-main { padding-top:.5rem !important; } }
+@media (min-width: 1024px) and (max-height:820px) {
+  #workout-main aside[data-purpose="motion-demonstration"] { padding:.45rem !important; }
+  #workout-main aside[data-purpose="motion-demonstration"] .h-80,
+  #workout-main aside[data-purpose="motion-demonstration"] .md\:h-96 { height:8rem !important; }
+  #workout-main aside[data-purpose="exercise-guide-panel"] { gap:.35rem !important; }
+}
 </style>
 <script data-purpose="selected-exercise">
 (() => {
  const exercise=sessionStorage.getItem('smurfExercise')||'squat';
  const jumping=exercise==='jumping_jack';
+ const plank=exercise==='plank';
+ const knees=exercise==='high_knees';
+ const exerciseInfo={squat:{title:'SQUAT',muscles:'Chân đứng rộng bằng vai, tay duỗi về trước. Hạ người đến khi đùi gần song song sàn, đầu gối cùng hướng ngón chân rồi đứng lên.',gif:'/static/Squats.gif',alt:'Mô phỏng động tác Squat',camera:'Yêu cầu: xoay người sang một bên, vai hướng về camera'},jumping_jack:{title:'JUMPING JACK',muscles:'Đứng khép chân, tay xuôi hai bên. Nhảy dang chân đồng thời đưa tay qua đầu, rồi trở về tư thế đầu và lặp lại.',gif:'/static/Jumpingjacks.gif',alt:'Mô phỏng động tác Jumping Jack',camera:'Yêu cầu: đứng đối diện với camera, nhìn thẳng vào màn hình'},plank:{title:'PLANK',muscles:'Nằm sấp, chống cẳng tay và mũi chân xuống sàn. Giữ thân người thẳng và duy trì tư thế lâu nhất có thể.',gif:'/static/Plank.gif',alt:'Mô phỏng động tác Plank',camera:'Yêu cầu: xoay người sang một bên, vai hướng về camera'},high_knees:{title:'HIGH KNEES',muscles:'Chạy tại chỗ, nâng gối cao trong mỗi bước. Giữ thân trên thẳng trong suốt bài tập.',gif:'/static/HighKnees.gif',alt:'Mô phỏng động tác High Knees',camera:'Yêu cầu: xoay người sang một bên, vai hướng về camera'}};
+ const info=exerciseInfo[exercise]||exerciseInfo.squat;
  document.body.dataset.exercise=exercise;
  const set=(id,text)=>{const el=document.getElementById(id);if(el)el.textContent=text;};
- set('exercise-title',jumping?'JUMPING JACK':'SQUAT');
- set('exercise-muscles',jumping?'Nhóm cơ: Toàn thân, vai, chân và hệ tim mạch':'Nhóm cơ: Đùi trước, cơ mông & cơ lõi');
- set('exercise-feedback-title',jumping?'Phản hồi: Giữ nhịp ổn định':'Phản hồi: Bắt đầu khi bạn sẵn sàng');
- set('exercise-feedback',jumping?'Bật nhẹ, tiếp đất êm và đưa hai tay qua đầu theo nhịp.':'Đặt toàn bộ cơ thể trong khung hình. Hạ hông có kiểm soát và giữ lưng thẳng.');
- set('motion-tip',jumping?'Jumping Jack: dang chân và đưa tay qua đầu':'Góc hạ hông lý tưởng: 90° - 100°');
- set('motion-subtip',jumping?'Tiếp đất nhẹ bằng mũi bàn chân, giữ nhịp thở đều.':'Trọng tâm dồn đều vào gót chân');
+ set('exercise-title',info.title);
+ set('camera-requirement',info.camera);
+ set('exercise-muscles',info.muscles);
+ set('exercise-feedback-title','Hướng dẫn');
+ set('exercise-feedback',info.muscles);
+ set('motion-tip',info.muscles);
+ set('motion-subtip',info.muscles);
  set('workout-reps','0');
- const demo=document.getElementById('exercise-demo-gif');if(demo){demo.src=jumping?'/static/Jumpingjacks.gif':'/static/Squats.gif';demo.alt=jumping?'Minh họa động tác Jumping Jack':'Minh họa động tác Squat';}
+ const demo=document.getElementById('exercise-demo-gif');if(demo){demo.src=info.gif;demo.alt=info.alt;}
  const pose=document.querySelector('[data-purpose="pose-skeleton-visualization"] svg');
- if(jumping&&pose){pose.innerHTML='<circle cx="120" cy="40" r="14" fill="#22c55e" fill-opacity=".25" stroke="#22c55e" stroke-width="3"/><g stroke="#00d2ff" stroke-width="5" stroke-linecap="round" fill="none"><path d="M120 54v55m0-38L75 35 45 10m75 61 45-36 30-25M120 109l-43 43-25 75m68-118 43 43 25 75"/></g><g fill="#fff" stroke="#22c55e" stroke-width="2"><circle cx="120" cy="71" r="5"/><circle cx="75" cy="35" r="5"/><circle cx="165" cy="35" r="5"/><circle cx="77" cy="152" r="5"/><circle cx="163" cy="152" r="5"/><circle cx="52" cy="227" r="5"/><circle cx="188" cy="227" r="5"/></g>';}
+ if(pose){pose.innerHTML=jumping?'<circle cx="120" cy="40" r="14" fill="#22c55e" fill-opacity=".25" stroke="#22c55e" stroke-width="3"/><g stroke="#00d2ff" stroke-width="5" stroke-linecap="round" fill="none"><path d="M120 54v55m0-38L75 35 45 10m75 61 45-36 30-25M120 109l-43 43-25 75m68-118 43 43 25 75"/></g><g fill="#fff" stroke="#22c55e" stroke-width="2"><circle cx="120" cy="71" r="5"/><circle cx="75" cy="35" r="5"/><circle cx="165" cy="35" r="5"/><circle cx="77" cy="152" r="5"/><circle cx="163" cy="152" r="5"/><circle cx="52" cy="227" r="5"/><circle cx="188" cy="227" r="5"/></g>':'';}
 })();
 </script>
 </body></html>"""

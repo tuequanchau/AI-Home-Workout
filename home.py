@@ -6,7 +6,7 @@ def get_home_html() -> str:
     return r"""<!DOCTYPE html><html class="dark" lang="vi"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Smurfer - Trợ Lý Tập Luyện AI</title>
+<title>Smurf Fitness - Trợ Lý Tập Luyện AI</title>
 <!-- Tailwind CSS CDN v3 -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script>
@@ -93,7 +93,8 @@ def get_home_html() -> str:
 <!-- Nhận diện thương hiệu & Trợ lý -->
 <div class="flex items-center gap-2 py-2">
   <a class="flex items-center gap-3 group" href="#">
-    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuATS2KJA5yyum8hor_mTt9Vu6dQjdBNGfI_hj1P7BkFKnEeNaROQgAGPhCzPuI-QeX7pJvhPQntx3Zn3cO_bRYbsjUz7xRgrYy7w7APe_2A3K6i1oKNrSDWzK9Txak203Anb6uFh_9n5n01Wl10CQRsPIauGS4hZbQ0Bw7lDMmEtCBLf1VYAJObAsv_mr40hZHkHzWfglB2QWEFvafXi5aGtrvdbejsOc68sokyVl0yqE9fNFfomWlJXA" alt="Smurf Fitness Logo" class="h-20 w-auto object-contain rounded-xl hover:scale-105 transition-transform duration-300 drop-shadow-md">
+    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMq7rJI3aRSSeattprqkNFKoDR5fbMSrl5d_n7u7iO3KP7XfiSBlv7Ouffi9YAhKZDke4jvfPaaMd3NSPMszqK9BsqTe4JqWkn_79pNtLOEXzbaIDieE5SCDkZ5NbKk7QXe-hlswVd3B9aJ6cgUUwt_ugmiMSUhkxkAgNOvsFLDSU_8cnSXgJWCPZewsbr8zCCa1bzfWumSwF8t0bqWwF9i5xM7I7klLzwVE8TiRubMAPIy2zKldtGHQ" alt="SMURF FITNESS Logo" class="h-14 w-14 object-cover rounded-2xl shadow-[0_0_20px_rgba(0,210,255,0.3)] border border-white/20 transition-transform duration-300 group-hover:scale-105">
+    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">SMURF FITNESS</span>
   </a>
   <div class="h-12 w-px bg-white/15 mx-4"></div>
   <div class="flex flex-col justify-center">
@@ -112,10 +113,10 @@ def get_home_html() -> str:
 </nav>
 <!-- Chỉ số cá nhân & Hồ sơ người dùng -->
 <div class="flex items-center gap-3">
-<!-- Huy hiệu chuỗi phát sáng -->
-<div class="flex items-center gap-1.5 bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/30 px-3 py-1.5 rounded-full">
-<span class="text-sm">🔥</span>
-<span id="attendance-streak" class="text-xs font-bold text-orange-400 tracking-wide">Chuỗi 0 ngày</span>
+<!-- Ngày tháng hiện tại -->
+<div class="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-2 rounded-full">
+<svg class="h-4 w-4 text-appleNeon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 012 2v14H3V6a2 2 0 012-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span id="real-date" class="text-xs font-semibold text-zinc-200 whitespace-nowrap" aria-live="polite"></span>
 </div>
 <!-- Chuông thông báo kính mờ -->
 <button class="relative w-12 h-12 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-zinc-300 hover:text-white transition-all">
@@ -139,229 +140,21 @@ def get_home_html() -> str:
 <main id="home-main" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-12 relative z-10">
 <!-- BEGIN: HeroSection -->
 <section id="home-layout" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-<!-- CỘT TRÁI (7 CỘT): CHỌN CHẾ ĐỘ TẬP LUYỆN -->
-<div class="lg:col-span-7 space-y-6">
-<!-- Tiêu đề và lời giới thiệu -->
-<div>
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-appleNeon/10 border border-appleNeon/30 mb-3">
-<span class="w-2 h-2 rounded-full bg-appleNeon animate-pulse"></span>
+<div class="lg:col-span-5 space-y-6 pt-4">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-appleNeon/10 border border-appleNeon/30"><span class="w-2 h-2 rounded-full bg-appleNeon animate-pulse"></span><span class="text-xs font-semibold text-appleNeon">SẴN SÀNG TẬP LUYỆN</span></div>
+<h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">Tập khỏe hơn,<br><span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-200 to-zinc-400">mỗi ngày một chút.</span></h1>
+<p class="mt-3 text-base text-zinc-400 max-w-xl font-normal leading-relaxed">Chọn bài tập phù hợp, định hình chuẩn form qua camera trí tuệ nhân tạo và chinh phục thể lực cùng Smurf Fitness.</p>
 
+<div id="muscle-preview" class="hidden rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-xl" aria-live="polite"><h2 id="muscle-preview-title" class="text-sm font-bold tracking-wide text-[#00d2ff]">VÙNG TẬP TRUNG</h2><div class="mt-3 grid grid-cols-[minmax(0,1fr)_minmax(120px,42%)] items-center gap-3"><div id="muscle-preview-tags" class="flex flex-col items-start gap-2"></div><img id="muscle-preview-image" class="h-48 w-full rounded-xl bg-white object-contain" alt="Sơ đồ vùng cơ tập trung"></div></div>
 </div>
-<h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
-            Tập khỏe hơn, <br>
-<span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-200 to-zinc-400">mỗi ngày một chút.</span>
-</h1>
-<p class="mt-3 text-base text-zinc-400 max-w-xl font-normal leading-relaxed">
-            Chọn bài tập phù hợp, định hình chuẩn form qua camera trí tuệ nhân tạo và chinh phục thể lực cùng Smurfer.
-          </p>
-</div>
-<!-- Danh sách bài tập chính -->
-<div class="space-y-4 pt-2">
-<div class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Chọn Bài Tập Trọng Tâm</div>
-<!-- Thẻ Bài Tập 1: Squat -->
-<div class="glass-card rounded-2xl p-6 hover:border-appleNeon/50 transition-all duration-300 relative group overflow-hidden shadow-apple-card hover:bg-appleCardHover/90">
-<!-- Vệt sáng tinh tế nền góc -->
-<div class="absolute -right-16 -top-16 w-44 h-44 bg-appleNeon/10 rounded-full blur-3xl pointer-events-none group-hover:bg-appleNeon/20 transition-all"></div>
-<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 relative z-10">
-<div class="flex items-start gap-4">
-<div class="w-14 h-14 rounded-2xl bg-zinc-800/80 border border-white/10 flex items-center justify-center text-appleNeon p-3 group-hover:scale-105 transition-transform duration-300">
-<!-- Biểu tượng Squat tối giản chuẩn Apple -->
-<svg class="w-full h-full" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-<circle cx="12" cy="4" r="2"></circle>
-<path d="M12 7v4l-3 4-2-1"></path>
-<path d="M12 11l3 4 2-1"></path>
-<path d="M7 19l2 2 3-1"></path>
-<path d="M17 19l-2 2-3-1"></path>
-</svg>
-</div>
-<div>
-<div class="flex items-center gap-2">
-<h3 class="text-xl font-bold text-white tracking-tight">Squat</h3>
-<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-appleNeon/15 text-appleNeon border border-appleNeon/30">AI Theo dõi thời gian thực</span>
-</div>
-<p class="text-sm text-zinc-400 mt-1 font-medium">Tăng cường cơ đùi trước, sau &amp; cơ mông săn chắc</p>
-<div class="flex items-center gap-4 mt-3 text-xs text-zinc-400">
-<span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-appleNeon"></span>12 - 20 Lần / Hiệp</span>
-
-</div>
-</div>
-</div>
-<!-- Nút CTA Squat -->
-<div class="flex sm:flex-col items-center justify-end">
-<a href="/workout" data-exercise="squat" onclick="sessionStorage.setItem(&quot;smurfExercise&quot;,&quot;squat&quot;)" class="w-full sm:w-auto px-6 py-3 rounded-full bg-appleNeon text-black font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#bbf048] shadow-glow-neon hover:scale-105 active:scale-95 transition-all duration-200">
-<span class="">Bắt đầu ngay</span>
-<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
-</svg>
-</a>
-</div>
-</div>
-</div>
-<!-- Thẻ Bài Tập 2: Jumping Jack -->
-<div class="glass-card rounded-2xl p-6 hover:border-appleBlue/50 transition-all duration-300 relative group overflow-hidden shadow-apple-card hover:bg-appleCardHover/90">
-<!-- Vệt sáng nền góc -->
-<div class="absolute -right-16 -top-16 w-44 h-44 bg-appleBlue/10 rounded-full blur-3xl pointer-events-none group-hover:bg-appleBlue/20 transition-all"></div>
-<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 relative z-10">
-<div class="flex items-start gap-4">
-<div class="w-14 h-14 rounded-2xl bg-zinc-800/80 border border-white/10 flex items-center justify-center text-appleBlue p-3 group-hover:scale-105 transition-transform duration-300">
-<!-- Biểu tượng Cardio Jumping Jack tối giản -->
-<svg class="w-full h-full" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-<circle cx="12" cy="4" r="2"></circle>
-<path d="M8 8l4 3 4-3"></path>
-<path d="M12 11v5"></path>
-<path d="M8 21l4-5 4 5"></path>
-</svg>
-</div>
-<div>
-<div class="flex items-center gap-2">
-<h3 class="text-xl font-bold text-white tracking-tight">Jumping Jack</h3>
-<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-appleBlue/15 text-appleBlue border border-appleBlue/30">Cardio Toàn Thân</span>
-</div>
-<p class="text-sm text-zinc-400 mt-1 font-medium">Đốt cháy calo, cải thiện nhịp tim &amp; sức bền dẻo dai</p>
-<div class="flex items-center gap-4 mt-3 text-xs text-zinc-400">
-<span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-appleBlue"></span>30 - 45 Giây / Hiệp</span>
-
-</div>
-</div>
-</div>
-<!-- Nút CTA Jumping Jack -->
-<div class="flex sm:flex-col items-center justify-end">
-<a href="/workout" data-exercise="jumping_jack" onclick="sessionStorage.setItem(&quot;smurfExercise&quot;,&quot;jumping_jack&quot;)" class="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-appleBlue to-blue-600 text-white font-bold text-sm flex items-center justify-center gap-2 hover:opacity-95 shadow-glow-blue hover:scale-105 active:scale-95 transition-all duration-200">
-<span class="">Bắt đầu ngay</span>
-<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
-</svg>
-</a>
-</div>
-</div>
-</div>
-</div>
-<!-- Bộ tùy chỉnh số lần tập nhanh -->
-
-</div>
-<!-- CỘT PHẢI (5 CỘT): CÔNG CỤ HỖ TRỢ & MILESTONES -->
-<div class="lg:col-span-5 space-y-6" id="cong-cu">
-<div class="flex items-center justify-between">
-<h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Công Cụ Hỗ Trợ</h2>
-<span id="real-date" class="flex items-center gap-1.5 text-xs font-medium text-zinc-300" aria-live="polite"></span>
-</div>
-<!-- Tiện ích 1: Máy Tính BMI -->
-<div class="glass-card rounded-3xl p-6 border border-white/10 relative overflow-hidden shadow-apple-card">
-<div class="flex items-start justify-between">
-<div>
-<span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Chỉ Số Thể Hình</span>
-<h3 class="text-lg font-bold text-white mt-0.5">Máy Tính BMI</h3>
-</div>
-<span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-              ✓ Cân đối
-            </span>
-</div>
-<!-- Điểm số BMI trung tâm -->
-<div class="my-5 flex items-baseline gap-3">
-<span class="text-5xl font-black text-white tracking-tight">--</span>
-<div class="text-xs text-zinc-400 font-medium">
-<div class="">Chỉ số thể trọng chuẩn</div>
-<div class="text-emerald-400">Phù hợp tiếp tục duy trì</div>
-</div>
-</div>
-<!-- Thanh đo chỉ số BMI trực quan -->
-<div class="space-y-2" hidden>
-<div id="bmi-scale" class="relative h-3.5 w-full rounded-full">
-<div class="absolute inset-y-0 inset-x-0 rounded-full overflow-hidden flex">
-<div class="h-full bg-sky-500/60" style="width:28.33%" title="Thiếu cân"></div>
-<div class="h-full bg-emerald-400" style="width:21.67%" title="Chuẩn"></div>
-<div class="h-full bg-amber-500/70" style="width:16.67%" title="Thừa cân"></div>
-<div class="h-full bg-red-500/65" style="width:33.33%" title="Béo phì"></div>
-</div>
-<!-- Vạch chỉ số di chuyển theo thang BMI 10–40 -->
-<div id="bmi-indicator" class="absolute top-1/2 left-0 w-2.5 h-5 bg-white rounded-full shadow-md border border-black/40 -translate-x-1/2 -translate-y-1/2" aria-label="Vị trí BMI"></div>
-</div>
-<div class="grid grid-cols-4 gap-1 text-[9px] sm:text-[10px] text-zinc-400 font-medium px-0.5 text-center">
-<span>Thiếu cân<br>(&lt;18.5)</span>
-<span class="text-white font-semibold">Chuẩn<br>18.5–24.9</span>
-<span>Thừa cân<br>25–29.9</span>
-<span>Béo phì<br>≥30</span>
-</div>
-</div>
-<div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-<span class="text-xs text-zinc-400">Chiều cao: 172cm · Cân nặng: 64kg</span>
-<button class="text-xs font-semibold text-appleBlue hover:text-blue-400 transition-colors flex items-center gap-1">
-              Cập nhật chỉ số
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-</svg>
-</button>
-</div>
-</div>
-<!-- Tiện ích 2: Milestone Chuỗi Tập Tuần -->
-<div class="glass-card rounded-3xl p-6 border border-white/10 relative overflow-hidden shadow-apple-card">
-<div class="flex items-start justify-between">
-<div>
-<span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Mục Tiêu Tuần Này</span>
-
-</div>
-
-</div>
-<!-- Lịch 7 ngày trong tuần -->
-<div class="mt-5 grid grid-cols-7 gap-2 text-center">
-<!-- Thứ 2 (Hoàn thành) -->
-<div class="flex flex-col items-center gap-1.5">
-<span class="text-[11px] text-zinc-400 font-medium">T2</span>
-<div class="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-xs font-bold">
-                ✓
-              </div>
-</div>
-<!-- Thứ 3 (Hoàn thành) -->
-<div class="flex flex-col items-center gap-1.5">
-<span class="text-[11px] text-zinc-400 font-medium">T3</span>
-<div class="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-xs font-bold">
-                ✓
-              </div>
-</div>
-<!-- Thứ 4 (Hoàn thành) -->
-<div class="flex flex-col items-center gap-1.5">
-<span class="text-[11px] text-zinc-400 font-medium">T4</span>
-<div class="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-xs font-bold">
-                ✓
-              </div>
-</div>
-<!-- Thứ 5 (Hoàn thành) -->
-<div class="flex flex-col items-center gap-1.5">
-<span class="text-[11px] text-zinc-400 font-medium">T5</span>
-<div class="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-xs font-bold">
-                ✓
-              </div>
-</div>
-<!-- Thứ 6 (Hôm nay - Đang sáng rực) -->
-<div class="flex flex-col items-center gap-1.5">
-<span class="text-[11px] text-appleNeon font-bold">T6</span>
-<div class="w-9 h-9 rounded-full bg-appleNeon text-black flex items-center justify-center text-xs font-black shadow-glow-neon ring-2 ring-white/30"><br></div>
-</div>
-<!-- Thứ 7 (Chưa tới) -->
-<div class="flex flex-col items-center gap-1.5">
-<span class="text-[11px] text-zinc-500 font-medium">T7</span>
-<div class="w-9 h-9 rounded-full bg-zinc-800/80 border border-white/5 text-zinc-500 flex items-center justify-center text-xs font-medium"><br></div>
-</div>
-<!-- Chủ Nhật (Chưa tới) -->
-<div class="flex flex-col items-center gap-1.5">
-<span class="text-[11px] text-zinc-500 font-medium">CN</span>
-<div class="w-9 h-9 rounded-full bg-zinc-800/80 border border-white/5 text-zinc-500 flex items-center justify-center text-xs font-medium"><br></div>
-</div>
-</div>
-<!-- Thanh tiến trình tích lũy quà thưởng -->
-<div class="mt-6 space-y-2">
-<div class="flex justify-between text-xs">
-<span class="text-zinc-300 font-medium">Tiến độ tích lũy: <strong class="text-white">5/7 ngày (71%)</strong></span>
-<span class="text-amber-400 font-semibold">Còn 2 ngày</span>
-</div>
-<div class="h-2 w-full bg-zinc-800 rounded-full overflow-hidden">
-<div class="h-full bg-gradient-to-r from-emerald-400 to-appleNeon rounded-full w-[71%] transition-all duration-500"></div>
-</div>
-
-</div>
-</div>
-</div>
-</section>
+<div class="lg:col-span-7 space-y-4">
+<div class="flex items-center justify-between"><h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Chọn bài tập</h2><span class="text-xs text-zinc-500">4 bài tập</span></div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="glass-card rounded-2xl p-5 border border-white/10 hover:border-appleNeon/50 transition-all"><div class="text-2xl mb-3">🏋️</div><h3 data-exercise-heading="squat" class="text-lg font-bold text-white">Squat</h3><p class="text-xs text-zinc-400 mt-1 min-h-8">Tăng cường cơ đùi và cơ mông.</p><a href="/workout" onclick="sessionStorage.setItem('smurfExercise','squat')" class="mt-4 w-full px-4 py-2.5 rounded-full bg-appleNeon text-black font-bold text-sm flex justify-center">Bắt đầu ngay</a></div>
+<div class="glass-card rounded-2xl p-5 border border-white/10 hover:border-appleBlue/50 transition-all"><div class="text-2xl mb-3">🤸</div><h3 data-exercise-heading="jumping_jack" class="text-lg font-bold text-white">Jumping Jack</h3><p class="text-xs text-zinc-400 mt-1 min-h-8">Vận động toàn thân, cải thiện sức bền.</p><a href="/workout" onclick="sessionStorage.setItem('smurfExercise','jumping_jack')" class="mt-4 w-full px-4 py-2.5 rounded-full bg-appleBlue text-white font-bold text-sm flex justify-center">Bắt đầu ngay</a></div>
+<div class="glass-card rounded-2xl p-5 border border-white/10 hover:border-purple-400/50 transition-all"><div class="text-2xl mb-3">🧘</div><h3 data-exercise-heading="plank" class="text-lg font-bold text-white">Plank</h3><p class="text-xs text-zinc-400 mt-1 min-h-8">Rèn luyện cơ lõi và sức bền.</p><a href="/workout" onclick="sessionStorage.setItem('smurfExercise','plank')" class="mt-4 w-full px-4 py-2.5 rounded-full bg-purple-500 text-white font-bold text-sm flex justify-center">Bắt đầu ngay</a></div>
+<div class="glass-card rounded-2xl p-5 border border-white/10 hover:border-orange-400/50 transition-all"><div class="text-2xl mb-3">🏃</div><h3 data-exercise-heading="high_knees" class="text-lg font-bold text-white">High Knees</h3><p class="text-xs text-zinc-400 mt-1 min-h-8">Chạy tại chỗ, nâng cao gối theo nhịp.</p><a href="/workout" onclick="sessionStorage.setItem('smurfExercise','high_knees')" class="mt-4 w-full px-4 py-2.5 rounded-full bg-orange-500 text-white font-bold text-sm flex justify-center">Bắt đầu ngay</a></div>
+</div></div></section>
 <!-- END: HeroSection -->
 <!-- BEGIN: DailyQuestsSection -->
 <section class="pt-4 space-y-6" id="nhiem-vu">
@@ -546,6 +339,14 @@ def get_home_html() -> str:
 (() => { const el=document.getElementById('real-date'); if(!el)return; const render=()=>{el.textContent=new Intl.DateTimeFormat('vi-VN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());};render();setInterval(render,60000); })();
 </script>
 
+<script data-purpose="exercise-muscle-preview">
+(() => {
+ const data={plank:{title:'Plank',tags:['Bụng','Vai','Cơ mông'],image:'/static/muscle-plank.png'},jumping_jack:{title:'Jumping Jack',tags:['Vai','Cơ đùi trước','Cơ đùi trong','Ngực','Cơ mông','Cơ bắp chân'],image:'/static/muscle-jumping-jack.png'},squat:{title:'Squat',tags:['Cơ mông','Cơ đùi trước','Cơ đùi sau','Cơ bắp chân'],image:'/static/muscle-squat.png'},high_knees:{title:'High Knees',tags:['Cơ mông','Cơ đùi trước','Cơ đùi sau','Cơ bắp chân','Lưng','Ngực','Vai'],image:'/static/muscle-high-knees.png'}};
+ const panel=document.getElementById('muscle-preview'),title=document.getElementById('muscle-preview-title'),tags=document.getElementById('muscle-preview-tags'),image=document.getElementById('muscle-preview-image'); if(!panel)return;
+ const show=(key)=>{const item=data[key];if(!item)return;title.textContent='VÙNG TẬP TRUNG · '+item.title;tags.innerHTML=item.tags.map(tag=>`<span class="rounded-full bg-white/10 px-3 py-1.5 text-xs text-slate-200"><span class="mr-1.5 text-blue-400">●</span>${tag}</span>`).join('');image.src=item.image;image.alt='Các vùng cơ tập trung khi tập '+item.title;panel.classList.remove('hidden');};
+ const hide=()=>panel.classList.add('hidden'); document.querySelectorAll('[data-exercise-heading]').forEach(heading=>{const card=heading.closest('.glass-card');if(!card)return;const key=heading.dataset.exerciseHeading;card.addEventListener('mouseenter',()=>show(key));card.addEventListener('mouseleave',hide);card.addEventListener('focusin',()=>show(key));card.addEventListener('focusout',e=>{if(!card.contains(e.relatedTarget))hide();});});
+})();
+</script>
 <script data-purpose="bmi-and-attendance">
 (() => {
  const bmiKey='smurfBmiV1', attendanceKey='smurfAttendanceDatesV1';

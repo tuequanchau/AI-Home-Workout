@@ -85,10 +85,10 @@ def get_summary_html() -> str:
 <header class="w-full relative z-20 px-6 lg:px-12 py-5 flex items-center justify-between border-b border-white/[0.06] bg-[#060608]/80 backdrop-blur-xl">
 <!-- Brand Logo and App Tagline -->
 <div class="flex items-center gap-3.5" data-purpose="brand-container">
-<img alt="Smurf Fitness Logo" class="h-16 w-16 md:h-20 md:w-20 rounded-2xl object-cover shadow-lg border border-white/20 transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIVtQWvcwkOyjtD4jMYzFFXu1-hWb73ctyu5sl7Ksax6g9cPtQlMw7e5EtsYuHH7Xf20SHWibNaUPt3WZHG65UR_QopmZ8ec2C9YIBTrXows57iabSBCrx_8AGy_vFphePxps3bw7vtdw-EH1NGeiZgSx4d3q9zz3cjsSTbqAJjkMdVRY-5pjTAN7lUdfV1kwAbe6o4PwMrJVPcU9PlSZJzuiGJUT6n63XIvogOSODHJYHgwc3wdsBxQ">
+<img alt="Smurf Fitness Logo" class="h-14 w-14 rounded-2xl object-cover shadow-[0_0_20px_rgba(0,210,255,0.3)] border border-white/20 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMq7rJI3aRSSeattprqkNFKoDR5fbMSrl5d_n7u7iO3KP7XfiSBlv7Ouffi9YAhKZDke4jvfPaaMd3NSPMszqK9BsqTe4JqWkn_79pNtLOEXzbaIDieE5SCDkZ5NbKk7QXe-hlswVd3B9aJ6cgUUwt_ugmiMSUhkxkAgNOvsFLDSU_8cnSXgJWCPZewsbr8zCCa1bzfWumSwF8t0bqWwF9i5xM7I7klLzwVE8TiRubMAPIy2zKldtGHQ">
 <div class="flex flex-col">
 <div class="flex items-center gap-2">
-<span class="text-white font-extrabold tracking-tight text-xl md:text-2xl leading-none">SMURF FITNESS</span>
+<span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">SMURF FITNESS</span>
 
 </div>
 
@@ -133,12 +133,12 @@ def get_summary_html() -> str:
 
 </div>
 <!-- 3 Performance Metric Cards -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5 mb-8" data-purpose="metrics-grid">
-<!-- Metric Card 1: Số lần hoàn thành -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5 mb-8" data-purpose="metrics-grid">
+<!-- Metric Card 1: Số lần hoàn thành / thời gian giữ -->
 <article class="glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-brand-cyan/40 transition-all duration-300">
 <div>
 <p class="text-[11px] font-bold uppercase tracking-wider text-white/50 mb-3">
-                Số lần hoàn thành
+                Số lần hoàn thành / thời gian giữ
               </p>
 <div class="flex items-baseline gap-2">
 <span id="summary-reps" class="text-4xl sm:text-5xl font-black text-brand-cyan tracking-tight">0</span>
@@ -157,26 +157,6 @@ def get_summary_html() -> str:
               </p>
 <div class="flex items-baseline gap-2">
 <span id="summary-duration" class="text-4xl sm:text-5xl font-mono font-extrabold text-white tracking-tight">00:00</span>
-</div>
-</div>
-<div class="mt-4 pt-3 border-t border-white/5 flex items-center text-xs text-white/50">
-
-</div>
-</article>
-<!-- Metric Card 3: Lượng calo tiêu thụ -->
-<article class="glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-amber-400/40 transition-all duration-300">
-<div>
-<div class="flex items-center justify-between mb-3">
-<p class="text-[11px] font-bold uppercase tracking-wider text-white/50">
-                  Lượng Calo Tiêu Thụ
-                </p>
-
-</div>
-<div class="flex items-baseline gap-2">
-<span class="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-200 tracking-tight">
-                  ~68
-                </span>
-<span class="text-base font-bold text-amber-300/80">kcal</span>
 </div>
 </div>
 <div class="mt-4 pt-3 border-t border-white/5 flex items-center text-xs text-white/50">
@@ -229,7 +209,7 @@ def get_summary_html() -> str:
 
 
 <script data-purpose="workout-result">
-(() => { try { const result=JSON.parse(sessionStorage.getItem('smurfLastWorkout')||'null'); if(!result)return; const name=result.exercise==='jumping_jack'?'Jumping Jack':'Squat'; const exercise=document.getElementById('summary-exercise'); const duration=document.getElementById('summary-duration'); const reps=document.getElementById('summary-reps'); if(exercise)exercise.textContent=name; if(duration)duration.textContent=result.duration||'00:00'; if(reps)reps.textContent=String(result.reps||0); } catch (_) {} })();
+(() => { try { const result=JSON.parse(sessionStorage.getItem('smurfLastWorkout')||'null'); if(!result)return; const names={squat:'Squat',jumping_jack:'Jumping Jack',plank:'Plank',high_knees:'High Knees'}; const name=names[result.exercise]||'Squat'; const exercise=document.getElementById('summary-exercise'); const duration=document.getElementById('summary-duration'); const reps=document.getElementById('summary-reps'); const unit=document.getElementById('summary-reps-unit'); if(unit&&result.exercise==='plank'){unit.textContent='giây'; if(reps)reps.textContent=String(result.durationSeconds||0);} if(exercise)exercise.textContent=name; if(duration)duration.textContent=result.duration||'00:00'; if(reps)reps.textContent=String(result.reps||0); } catch (_) {} })();
 </script>
 <style data-purpose="summary-fit-screen">
 @media (min-width: 768px) and (min-height: 680px) {
