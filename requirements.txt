@@ -1,18 +1,2 @@
 fastapi>=0.115,<1.0
 uvicorn[standard]>=0.30,<1.0
-opencv-python
-mediapipe
-numpy
-customtkinter
-Pillow
-pytest
-pyinstaller
-
-# Ghi chú công dụng:
-# OpenCV: đọc webcam và xử lý ảnh.
-# MediaPipe: nhận diện tư thế.
-# NumPy: tính toán vector, góc khớp.
-# CustomTkinter: giao diện desktop.
-# Pillow: xử lý ảnh hiển thị trên GUI.
-# pytest: kiểm thử code.
-# PyInstaller: đóng gói ứng dụng thành file .exe
