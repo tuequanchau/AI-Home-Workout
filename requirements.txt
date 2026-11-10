@@ -1,7 +1,3 @@
- giao-dien-ui-1
-fastapi>=0.115,<1.0
-uvicorn[standard]>=0.30,<1.0
-
 opencv-python
 mediapipe
 numpy
@@ -15,4 +11,3 @@ pyinstaller
 ##Pillow: xử lý ảnh hiển thị.
 #pytest: kiểm thử.
 #gPyInstaller: đóng gói ứng dụng thành .exe
- main
