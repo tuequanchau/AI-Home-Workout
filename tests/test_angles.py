@@ -1,7 +1,7 @@
 # File: tests/test_angles.py
 import pytest
 # Lưu ý: Nếu file trong thư mục analysis tên là angles.py thì đổi angle_calculation thành angles
-from angle_calculation import calculate_angle, calculate_average_angle
+from analysis.angle_calculation import calculate_angle, calculate_average_angle
 
 # --- NHÓM 1: KIỂM THỬ HÀM TÍNH GÓC (calculate_angle) ---
 

@@ -29,5 +29,11 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
+
+# Môi trường ảo & bộ nhớ đệm Python/Pytest
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
 =======
 >>>>>>> 4baf0b693d1dde64c96990ea6559b7224847bc6f
