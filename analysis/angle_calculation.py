@@ -91,6 +91,71 @@ def calculate_average_angle(angle1, angle2):
         angle for angle in (angle1, angle2)
         if angle is not None
     ]
+    def get_joint_angle(
+    landmarks,
+    index_a,
+    index_b,
+    index_c,
+    min_visibility=0.5
+):
+    """
+    Lấy tọa độ ba landmark và tính góc khớp.
+
+    index_a: Điểm thứ nhất.
+    index_b: Điểm tại vị trí khớp (đỉnh góc).
+    index_c: Điểm thứ ba.
+
+    Ví dụ Squat:
+    get_joint_angle(landmarks, 23, 25, 27)
+    Tính góc hông - đầu gối - mắt cá chân.
+    """
+
+    point_a = get_point_2d(
+        landmarks, index_a, min_visibility
+    )
+
+    point_b = get_point_2d(
+        landmarks, index_b, min_visibility
+    )
+
+    point_c = get_point_2d(
+        landmarks, index_c, min_visibility
+    )
+
+    return calculate_angle(
+        point_a,
+        point_b,
+        point_c
+    )
+
+
+def get_distance_between(
+    landmarks,
+    index_a,
+    index_b,
+    min_visibility=0.5
+):
+    """
+    Lấy tọa độ hai landmark và tính khoảng cách giữa chúng.
+
+    Ví dụ Jumping Jack:
+    get_distance_between(landmarks, 27, 28)
+    Tính khoảng cách giữa hai mắt cá chân.
+    """
+
+    point_a = get_point_2d(
+        landmarks, index_a, min_visibility
+    )
+
+    point_b = get_point_2d(
+        landmarks, index_b, min_visibility
+    )
+
+    return calculate_distance(
+        point_a,
+        point_b
+    )
+
 
     if not valid_angles:
         return None
