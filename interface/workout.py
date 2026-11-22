@@ -175,29 +175,132 @@ def get_workout_html() -> str:
 <!-- BEGIN: InteractiveScripts -->
 <script data-purpose="workout-timer-simulation">
 (() => {
-  let elapsed=0, startedAt=0, running=false, paused=false, timerId=null;
-  const display=document.querySelector('[data-purpose="workout-timer"] .font-mono');
-  const startButton=document.getElementById('start-workout-button');
-  const pauseButton=document.querySelector('[aria-label="Tạm dừng buổi tập"]');
-  const finishLink=document.querySelector('[aria-label="Kết thúc buổi tập"]');
-  const format=(seconds)=>String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
-  const shownSeconds=()=>{const parts=(display?.textContent||'00:00').trim().split(':').map(Number);return (parts[0]||0)*60+(parts[1]||0);};
-  const render=()=>{if(display&&running)display.textContent=format(elapsed+Math.floor((Date.now()-startedAt)/1000));};
-  const startClock=()=>{running=true;paused=false;startedAt=Date.now();timerId=window.setInterval(render,100);render();};
-  const freezeClock=()=>{if(running){elapsed=shownSeconds();running=false;window.clearInterval(timerId);timerId=null;}paused=true;};
-  if(!display||!startButton||!pauseButton||!finishLink)return;
-  display.textContent='00:00';
-  startButton.addEventListener('click',()=>{if(running)return;startButton.style.display='none';pauseButton.style.display='flex';finishLink.style.display='flex';startClock();});
-  pauseButton.addEventListener('click',()=>{
-    if(running){freezeClock();pauseButton.setAttribute('aria-label','Tiếp tục buổi tập');pauseButton.querySelector('span').textContent='Tiếp tục';pauseButton.querySelector('svg').innerHTML='<path d="M8 5v14l11-7z"></path>';}
-    else if(paused){pauseButton.setAttribute('aria-label','Tạm dừng buổi tập');pauseButton.querySelector('span').textContent='Tạm dừng';pauseButton.querySelector('svg').innerHTML='<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>';startClock();}
+  let pollId = null;
+  let running = false;
+  let paused = false;
+
+  const display = document.querySelector('[data-purpose="workout-timer"] .font-mono');
+  const repsEl = document.getElementById('workout-reps');
+  const feedbackTitleEl = document.getElementById('exercise-feedback-title');
+  const feedbackEl = document.getElementById('exercise-feedback');
+  const startButton = document.getElementById('start-workout-button');
+  const pauseButton = document.querySelector('[aria-label="Tạm dừng buổi tập"]');
+  const finishLink = document.querySelector('[aria-label="Kết thúc buổi tập"]');
+
+  if (!display || !startButton || !pauseButton || !finishLink) return;
+
+  const postJson = async (url, body = null) => {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : null,
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Lỗi kết nối máy chủ');
+    }
+    return res.json();
+  };
+
+  const applyStatus = (data) => {
+    if (!data) return;
+    if (repsEl && typeof data.reps === 'number') {
+      repsEl.textContent = String(data.reps);
+    }
+    if (display && data.duration) {
+      display.textContent = data.duration;
+    }
+    if (feedbackEl && data.feedback) {
+      feedbackEl.textContent = data.feedback;
+    }
+    if (feedbackTitleEl) {
+      feedbackTitleEl.textContent = data.valid ? 'Phản hồi AI trực tiếp' : 'Lưu ý khung hình';
+    }
+  };
+
+  const syncStatus = async () => {
+    if (!running) return;
+    try {
+      const res = await fetch('/api/workout/status');
+      if (res.ok) {
+        const data = await res.json();
+        applyStatus(data);
+      }
+    } catch (_) {}
+  };
+
+  const startPolling = () => {
+    if (pollId) window.clearInterval(pollId);
+    pollId = window.setInterval(syncStatus, 200);
+  };
+
+  const stopPolling = () => {
+    if (pollId) {
+      window.clearInterval(pollId);
+      pollId = null;
+    }
+  };
+
+  startButton.addEventListener('click', async () => {
+    if (running) return;
+    const exercise = sessionStorage.getItem('smurfExercise') || 'squat';
+    try {
+      const data = await postJson('/api/workout/start', { exercise });
+      running = true;
+      paused = false;
+      startButton.style.display = 'none';
+      pauseButton.style.display = 'flex';
+      finishLink.style.display = 'flex';
+      applyStatus(data);
+      startPolling();
+    } catch (err) {
+      if (feedbackEl) feedbackEl.textContent = err.message;
+    }
   });
-  finishLink.addEventListener('click',(event)=>{
-    event.preventDefault();if(running)freezeClock();
-    const duration=paused?elapsed:shownSeconds();
-    const reps=Number(document.getElementById('workout-reps')?.textContent||0);
-    const result={exercise:sessionStorage.getItem('smurfExercise')||'squat',durationSeconds:duration,duration:format(duration),reps};
-    sessionStorage.setItem('smurfLastWorkout',JSON.stringify(result));window.location.assign(finishLink.href);
+
+  pauseButton.addEventListener('click', async () => {
+    try {
+      if (running) {
+        const data = await postJson('/api/workout/pause');
+        running = false;
+        paused = true;
+        stopPolling();
+        applyStatus(data);
+        pauseButton.setAttribute('aria-label', 'Tiếp tục buổi tập');
+        pauseButton.querySelector('span').textContent = 'Tiếp tục';
+        pauseButton.querySelector('svg').innerHTML = '<path d="M8 5v14l11-7z"></path>';
+      } else if (paused) {
+        const data = await postJson('/api/workout/resume');
+        running = true;
+        paused = false;
+        applyStatus(data);
+        startPolling();
+        pauseButton.setAttribute('aria-label', 'Tạm dừng buổi tập');
+        pauseButton.querySelector('span').textContent = 'Tạm dừng';
+        pauseButton.querySelector('svg').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>';
+      }
+    } catch (err) {
+      if (feedbackEl) feedbackEl.textContent = err.message;
+    }
+  });
+
+  finishLink.addEventListener('click', async (event) => {
+    event.preventDefault();
+    stopPolling();
+    let finalData = null;
+    try {
+      finalData = await postJson('/api/workout/finish');
+    } catch (_) {}
+
+    const result = {
+      exercise: (finalData && finalData.exercise) || sessionStorage.getItem('smurfExercise') || 'squat',
+      durationSeconds: (finalData && finalData.duration_seconds) || 0,
+      duration: (finalData && finalData.duration) || display.textContent || '00:00',
+      reps: (finalData && finalData.reps) ?? Number(repsEl?.textContent || 0),
+      feedback: (finalData && finalData.feedback) || '',
+    };
+    sessionStorage.setItem('smurfLastWorkout', JSON.stringify(result));
+    window.location.assign(finishLink.href);
   });
 })();
 </script>
