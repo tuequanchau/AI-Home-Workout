@@ -20,6 +20,9 @@ import sys
 import time
 import threading
 
+# Mở webcam bằng MSMF trên Windows hay mất 5-30 giây; tắt khởi tạo phần cứng để mở nhanh (phải trước import cv2)
+os.environ.setdefault("OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS", "0")
+
 import cv2
 
 
