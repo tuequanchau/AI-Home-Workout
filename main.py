@@ -29,6 +29,7 @@ manager = WorkoutManager()
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
+    manager.warmup()          # nạp OpenCV + MediaPipe + model ở luồng nền, server vẫn lên ngay
     yield
     manager.shutdown()          # nhả webcam khi tắt server
 
@@ -55,7 +56,12 @@ WORKOUT_LIVE_JS = """
   // Thay khung xương mô phỏng bằng video camera thật (có vẽ khung xương)
   if (area) {
     area.style.minHeight = '0';
-    area.innerHTML = '<img id="live-feed" alt="Camera AI" src="/api/video_feed?t=' + Date.now() +
+    area.style.position = 'relative';
+    area.innerHTML =
+      '<div id="cam-loading" style="position:absolute;inset:0;display:flex;align-items:center;' +
+      'justify-content:center;text-align:center;padding:1rem;color:#a1a1aa;font-size:1rem">' +
+      'Đang khởi động camera...</div>' +
+      '<img id="live-feed" alt="" src="/api/video_feed?t=' + Date.now() +
       '" style="width:100%;height:100%;object-fit:contain;border-radius:1rem">';
   }
 
@@ -84,6 +90,11 @@ WORKOUT_LIVE_JS = """
   const poll = async () => {
     try {
       const s = await (await fetch('/api/state', {cache: 'no-store'})).json();
+      const loading = document.getElementById('cam-loading');
+      if (loading) {
+        if (s.camera_error) loading.textContent = 'Lỗi camera: ' + s.camera_error;
+        else if (s.camera === 'running' && s.fps > 0) loading.remove();
+      }
       if (s.camera_error) { show('Lỗi camera', s.camera_error); return; }
       if (!s.session_active) return;
       if (repsEl) repsEl.textContent = s.reps;
@@ -97,20 +108,38 @@ WORKOUT_LIVE_JS = """
 """
 
 
+HOME_WARMUP_JS = """
+<script data-purpose="camera-warmup">
+(() => {
+  // Bắt đầu mở webcam ngay khi người dùng trỏ/chạm vào nút chọn bài, để sang trang tập là có hình sớm hơn
+  let last = 0;
+  const warm = () => {
+    const t = Date.now();
+    if (t - last < 5000) return;
+    last = t;
+    fetch('/api/camera/warmup', {method: 'POST', keepalive: true}).catch(() => {});
+  };
+  document.querySelectorAll('a[href="/workout"]').forEach((a) => {
+    ['pointerenter', 'touchstart', 'focus', 'click'].forEach((ev) => a.addEventListener(ev, warm, {passive: true}));
+  });
+})();
+</script>
+"""
+
+
+def _inject(html: str, snippet: str) -> str:
+    return html.replace("</body>", snippet + "</body>", 1) if "</body>" in html else html + snippet
+
+
 # ============================== Trang web ==============================
 @app.get("/", response_class=HTMLResponse)
 def home() -> HTMLResponse:
-    return HTMLResponse(get_home_html())
+    return HTMLResponse(_inject(get_home_html(), HOME_WARMUP_JS))
 
 
 @app.get("/workout", response_class=HTMLResponse)
 def workout() -> HTMLResponse:
-    html = get_workout_html()
-    if "</body>" in html:
-        html = html.replace("</body>", WORKOUT_LIVE_JS + "</body>", 1)
-    else:
-        html += WORKOUT_LIVE_JS
-    return HTMLResponse(html)
+    return HTMLResponse(_inject(get_workout_html(), WORKOUT_LIVE_JS))
 
 
 @app.get("/summary", response_class=HTMLResponse)
@@ -132,6 +161,14 @@ def api_health():
 @app.get("/api/exercises")
 def api_exercises():
     return EXERCISES
+
+
+@app.post("/api/camera/warmup")
+def api_camera_warmup():
+    """Mở camera sớm (trang chủ gọi khi người dùng trỏ vào nút chọn bài). Trả về ngay, không chờ camera."""
+    manager.touch()
+    manager.ensure_camera()
+    return {"camera": manager.get_status()["camera"]}
 
 
 @app.get("/api/state")
