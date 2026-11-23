@@ -20,6 +20,10 @@ import threading
 import time
 from typing import Any, Dict, Iterator, Optional, Tuple
 
+# Mở webcam bằng MSMF trên Windows hay mất 5-30 giây vì khởi tạo phần cứng. Tắt đi để mở nhanh.
+# Phải đặt TRƯỚC khi import cv2 (đổi lại bằng cách tự đặt biến này = 1 trước khi chạy).
+os.environ.setdefault("OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS", "0")
+
 EXERCISES = {
     "squat": "Squat",
     "jumping_jack": "Jumping Jack",
@@ -36,7 +40,7 @@ ANALYSIS_REGISTRY = {
     "high_knees": ("analysis.high_knees", "HighKneesCounter"),
 }
 
-IDLE_TIMEOUT = 8.0        # giây không có trang web nào gọi API -> tắt camera
+IDLE_TIMEOUT = 15.0       # giây không có trang web nào gọi API -> tắt camera (vào lại trong thời gian này là có ngay)
 NO_FRAME_TIMEOUT = 3.0    # giây không đọc được khung hình -> báo lỗi camera
 JPEG_QUALITY = 70
 
@@ -295,6 +299,11 @@ class WorkoutManager:
         self._last_touch = time.monotonic()
         self._last_idx = -1
 
+        self._detector = None                # PoseDetector dùng chung, nạp sẵn ở warmup()
+        self._warm_thread: Optional[threading.Thread] = None
+        self._warm_error: Optional[str] = None
+        self._timings: Dict[str, float] = {}  # thời gian từng bước khởi động camera (xem /api/health)
+
         self._session: Optional[_Session] = None
         self._last_summary: Optional[Dict[str, Any]] = None
 
@@ -313,6 +322,36 @@ class WorkoutManager:
             self._thread = threading.Thread(target=self._camera_loop, name="camera-loop", daemon=True)
             self._thread.start()
 
+    # ---- nạp trước thư viện + model để khi chọn bài chỉ còn việc mở webcam ----
+    def warmup(self) -> None:
+        """Nạp sẵn OpenCV, MediaPipe và model nhận diện ở luồng nền. Gọi 1 lần khi server khởi động."""
+        with self._lock:
+            if self._detector is not None or (self._warm_thread is not None and self._warm_thread.is_alive()):
+                return
+            self._warm_thread = threading.Thread(target=self._warm, name="warmup", daemon=True)
+            self._warm_thread.start()
+
+    def _warm(self) -> None:
+        t0 = time.perf_counter()
+        try:
+            import cv2                                          # noqa: F401
+            from camera.camera import Camera                    # noqa: F401
+            from camera.pose_detection import PoseDetector
+            self._detector = PoseDetector(complexity=0)
+            self._timings["warmup_s"] = round(time.perf_counter() - t0, 2)
+            self._warm_error = None
+        except Exception as e:                                  # noqa: BLE001 - vòng camera sẽ báo lỗi cụ thể
+            self._warm_error = f"{type(e).__name__}: {e}"
+
+    def _get_detector(self):
+        t = self._warm_thread
+        if t is not None and t.is_alive():
+            t.join()                                            # đang nạp nền -> đợi cho xong, không nạp hai lần
+        if self._detector is None:
+            from camera.pose_detection import PoseDetector
+            self._detector = PoseDetector(complexity=0)
+        return self._detector
+
     def _set_camera(self, status: str, error: Optional[str] = None) -> None:
         with self._lock:
             self._camera_status, self._camera_error = status, error
@@ -325,19 +364,25 @@ class WorkoutManager:
         return getter()
 
     def _camera_loop(self) -> None:
-        cam = detector = None
+        cam = None
         idle = False
+        t_begin = time.perf_counter()
+        t_first = None
+        tm: Dict[str, float] = {}
         try:
             import cv2                                   # import muộn: server vẫn lên được nếu thiếu thư viện
             from camera.camera import Camera
-            from camera.pose_detection import PoseDetector
+            tm["import_s"] = round(time.perf_counter() - t_begin, 2)
 
             cam = Camera(camera_id=self.camera_id)
-            if not cam.start():
+            if not cam.start():                          # bước chậm nhất; warmup() đang chạy song song
                 raise RuntimeError(
                     "Không mở được webcam. Đóng ứng dụng đang dùng camera (Zoom, Meet, trình duyệt) "
                     "hoặc đổi biến môi trường CAMERA_ID (0, 1, 2).")
-            detector = PoseDetector(complexity=0)
+            tm["camera_open_s"] = round(time.perf_counter() - t_begin, 2)
+
+            detector = self._get_detector()              # đã nạp sẵn nên thường tức thì
+            tm["detector_ready_s"] = round(time.perf_counter() - t_begin, 2)
             self._last_idx = -1
             self._set_camera("running")
 
@@ -354,6 +399,11 @@ class WorkoutManager:
                     time.sleep(0.005)
                     continue
                 last_frame = time.monotonic()
+                if t_first is None:                      # khung hình đầu tiên: ghi lại thời gian khởi động
+                    tm["first_frame_s"] = round(time.perf_counter() - t_begin, 2)
+                    self._timings.update(tm)
+                    print("[camera] khởi động: " + " | ".join(f"{k}={v}" for k, v in tm.items()), flush=True)
+                    t_first = tm["first_frame_s"]
 
                 detector.find_pose(frame, draw=True)
                 landmarks = detector.get_position(frame)
@@ -371,7 +421,7 @@ class WorkoutManager:
         except Exception as e:                           # noqa: BLE001 - báo lỗi lên giao diện
             self._set_camera("error", f"{type(e).__name__}: {e}")
         finally:
-            for obj, fn in ((detector, "close"), (cam, "release")):
+            for obj, fn in ((cam, "release"),):          # detector giữ lại cho lần mở camera sau
                 try:
                     if obj is not None:
                         getattr(obj, fn)()
@@ -545,6 +595,8 @@ class WorkoutManager:
                 "camera_id": self.camera_id,
                 "engines": engines,
                 "import_errors": dict(self.import_errors),
+                "startup_timings": dict(self._timings),
+                "warmup_error": self._warm_error,
             }
 
     def mjpeg_stream(self) -> Iterator[bytes]:
@@ -572,3 +624,8 @@ class WorkoutManager:
         t = self._thread
         if t is not None and t.is_alive():
             t.join(timeout=3.0)
+        try:
+            if self._detector is not None:
+                self._detector.close()
+        except Exception:                                # noqa: BLE001
+            pass
